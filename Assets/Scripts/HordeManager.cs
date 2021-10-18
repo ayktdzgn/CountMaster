@@ -61,9 +61,7 @@ public class HordeManager : MonoBehaviour
                 HordeCount -= changeCount;
                 break;
             case OperatorType.Mul:
-                Debug.Log("hordeCount: " + HordeCount +" - change value : " + changeCount);
                 var mulCount = (HordeCount * changeCount) - HordeCount;
-                Debug.Log(mulCount);
                 SpawnMember(mulCount, memberSpawnTransform);
                 HordeCount += mulCount;
                 break;

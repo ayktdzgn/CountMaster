@@ -20,8 +20,18 @@ public class Member : MonoBehaviour
         }
     }
 
-    public void MoveTo(Vector3 targetPosition)
+    public void PullMemberToCenter(Vector3 center, Rigidbody parentRigidbody)
     {
-        _rigidbody.MovePosition(targetPosition);
+        if ((center - _rigidbody.position).sqrMagnitude > 0.0001f)
+        { // if vectors are different
+            AddForce(center, parentRigidbody);
+        }
+    }
+    private void AddForce(Vector3 center, Rigidbody parentRigidbody)
+    {
+        var relativeTarget = (center - _rigidbody.position);
+        var dir = relativeTarget.normalized;
+
+        _rigidbody.velocity = new Vector3(dir.x + parentRigidbody.velocity.x, dir.y, dir.z + parentRigidbody.velocity.z);
     }
 }

@@ -32,7 +32,6 @@ public class Gate : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Gate");
             _gateManager.GateTriggered();
             HordeManager.OnHordeChange?.Invoke(_operatorValue, _operatorType);
         }

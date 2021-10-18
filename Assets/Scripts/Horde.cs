@@ -17,7 +17,7 @@ public class Horde : MonoBehaviour
     [SerializeField] HordeMoveControl _hordeMoveControl;
 
     float tempTime = Mathf.Infinity;
-    private float _smoothTime = 0.3f;
+    private float _smoothTime = 0.1f;
 
     private void Awake()
     {
@@ -31,9 +31,9 @@ public class Horde : MonoBehaviour
 
     void Start()
     {
-        HordeManager.OnHordeChange?.Invoke(startMemberCount , OperatorType.Add);
-
         _hordeMoveControl.Init(this);
+
+        HordeManager.OnHordeChange?.Invoke(startMemberCount , OperatorType.Add);
         SetMembersHordePosition();
     }
 
@@ -47,9 +47,9 @@ public class Horde : MonoBehaviour
             for (int i = 0; i < _hordeManager.HordeList.Count; i++)
             {
                 _hordeManager.HordeList[i].Rigidbody.isKinematic = false;
-                PullMemberToCenter(centerPoint.position,_hordeManager.HordeList[i].Rigidbody);
+                _hordeManager.HordeList[i].PullMemberToCenter(centerPoint.position,_rigidbody);
                 if(tempTime>= pullCenterTime)_hordeManager.HordeList[i].Rigidbody.isKinematic = true;
-
+                if (tempTime <= 0.6f) _hordeMoveControl.FindHordeRadius();
             }
         }
     }
@@ -58,27 +58,6 @@ public class Horde : MonoBehaviour
     {
         SetMembersHordePosition();
         tempTime = 0;
-    }
-
-    public void PullMemberToCenter(Vector3 center ,Rigidbody rigidbody)
-    {
-            if ((center - rigidbody.position).sqrMagnitude > 0.0001f)
-            { // if vectors are different
-                AddForce(center, rigidbody);
-            }
-    }
-    private void AddForce(Vector3 center , Rigidbody rigidbody)
-    {
-        var relativeTarget = (center - rigidbody.position);
-        var velocity = rigidbody.velocity;
-
-
-        //var dir = relativeTarget.normalized;
-
-        var newPos = Vector3.SmoothDamp(rigidbody.position, center, ref velocity, _smoothTime, float.PositiveInfinity, Time.fixedDeltaTime);
-        //var distance = Vector3.Distance(center, newPos);
-
-        rigidbody.velocity = velocity;
     }
 
     public void SetMembersHordePosition()
@@ -123,14 +102,6 @@ public class Horde : MonoBehaviour
     }
 
 
-#if UNITY_EDITOR
-    void OnDrawGizmos()
-    {
-        Gizmos.color = new Color(0, 255, 0, 0.25f);
-        Gizmos.DrawCube(transform.position, new Vector3(_hordeMoveControl.HordeWalkableLimits, 1, 1));
-    }
-#endif
-
     [Serializable]
     public struct HordeMoveControl
     {
@@ -150,11 +121,10 @@ public class Horde : MonoBehaviour
 
         public void FUpdate()
         {
-            FindHordeRadius();
             HordeMove(_horde._rigidbody);
         }
 
-        private void FindHordeRadius()
+        public void FindHordeRadius()
         {
             float maxDistace = 0f;
             for (int i = 0; i < _horde._hordeManager.HordeList.Count; i++)
@@ -166,6 +136,7 @@ public class Horde : MonoBehaviour
                 }
             }
             _hordeRadius = maxDistace - 0.1f;
+            Debug.Log(_hordeRadius);
         }
 
         private void HordeMove(Rigidbody rigidbody)
@@ -179,11 +150,16 @@ public class Horde : MonoBehaviour
         }
         float SwerveMove(Rigidbody rigidbody)
         {
-            /*float clampedHorizontal = */ return Mathf.Clamp(rigidbody.transform.position.x + joystick.Horizontal * _sideMoveSpeed * Time.deltaTime, (-_hordeWalkableLimits/2)+_hordeRadius, (_hordeWalkableLimits/2)-_hordeRadius);
-            //Vector3 direction = new Vector3(clampedHorizontal, rigidbody.transform.position.y, rigidbody.transform.position.z);
-            //return direction;
-            //_horde._rigidbody.MovePosition(direction);
+            return Mathf.Clamp(rigidbody.transform.position.x + joystick.Horizontal * _sideMoveSpeed * Time.deltaTime, (-_hordeWalkableLimits/2)+_hordeRadius, (_hordeWalkableLimits/2)-_hordeRadius);
         }
     }
 
+
+#if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(0, 255, 0, 0.25f);
+        Gizmos.DrawCube(transform.position, new Vector3(_hordeMoveControl.HordeWalkableLimits, 1, 1));
+    }
+#endif
 }
