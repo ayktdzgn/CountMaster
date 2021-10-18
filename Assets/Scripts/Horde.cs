@@ -11,12 +11,28 @@ public class Horde : MonoBehaviour
     public int[] hordeRingMemberCount;
     public float[] hordeRingMemberDistance;
 
+    [SerializeField] float pullCenterTime;
     [SerializeField] Rigidbody _rigidbody;
-    HordeMoveControl _hordeMoveControl;
-    List<GameObject> memberList = new List<GameObject>();
+    [SerializeField] HordeManager _hordeManager;
+    [SerializeField] HordeMoveControl _hordeMoveControl;
+
+    float tempTime = Mathf.Infinity;
+    private float _smoothTime = 0.3f;
+
+    private void Awake()
+    {
+        HordeManager.OnHordeChange += PullCenter;
+    }
+
+    private void OnDestroy()
+    {
+        HordeManager.OnHordeChange -= PullCenter;
+    }
 
     void Start()
     {
+        HordeManager.OnHordeChange?.Invoke(startMemberCount , OperatorType.Add);
+
         _hordeMoveControl.Init(this);
         SetMembersHordePosition();
     }
@@ -24,6 +40,45 @@ public class Horde : MonoBehaviour
     void FixedUpdate()
     {
         _hordeMoveControl.FUpdate();
+        if (tempTime < pullCenterTime)
+        {
+            tempTime += Time.fixedDeltaTime;
+
+            for (int i = 0; i < _hordeManager.HordeList.Count; i++)
+            {
+                _hordeManager.HordeList[i].Rigidbody.isKinematic = false;
+                PullMemberToCenter(centerPoint.position,_hordeManager.HordeList[i].Rigidbody);
+                if(tempTime>= pullCenterTime)_hordeManager.HordeList[i].Rigidbody.isKinematic = true;
+
+            }
+        }
+    }
+
+    private void PullCenter(int numOfCharacter, OperatorType operatorType, Member member)
+    {
+        SetMembersHordePosition();
+        tempTime = 0;
+    }
+
+    public void PullMemberToCenter(Vector3 center ,Rigidbody rigidbody)
+    {
+            if ((center - rigidbody.position).sqrMagnitude > 0.0001f)
+            { // if vectors are different
+                AddForce(center, rigidbody);
+            }
+    }
+    private void AddForce(Vector3 center , Rigidbody rigidbody)
+    {
+        var relativeTarget = (center - rigidbody.position);
+        var velocity = rigidbody.velocity;
+
+
+        //var dir = relativeTarget.normalized;
+
+        var newPos = Vector3.SmoothDamp(rigidbody.position, center, ref velocity, _smoothTime, float.PositiveInfinity, Time.fixedDeltaTime);
+        //var distance = Vector3.Distance(center, newPos);
+
+        rigidbody.velocity = velocity;
     }
 
     public void SetMembersHordePosition()
@@ -31,9 +86,9 @@ public class Horde : MonoBehaviour
         Vector3 movePosition = Vector3.zero;
         List<Vector3> targetPositionList = GetPositionListAround(movePosition, hordeRingMemberDistance, hordeRingMemberCount);
 
-        for (int i = 0; i < memberList.Count; i++)
+        for (int i = 0; i < _hordeManager.HordeList.Count; i++)
         {
-            memberList[i].transform.DOLocalMove(targetPositionList[i], 0.5f);
+            _hordeManager.HordeList[i].transform.DOLocalMove(targetPositionList[i], 0.5f);
         }
     }
 
@@ -67,14 +122,26 @@ public class Horde : MonoBehaviour
         return Quaternion.Euler(0,angle,0) * vec;
     }
 
+
+#if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(0, 255, 0, 0.25f);
+        Gizmos.DrawCube(transform.position, new Vector3(_hordeMoveControl.HordeWalkableLimits, 1, 1));
+    }
+#endif
+
     [Serializable]
     public struct HordeMoveControl
     {
         [SerializeField] private float _forwardSpeed;
         [SerializeField] private float _sideMoveSpeed;
+        [SerializeField] float _hordeWalkableLimits;
         [SerializeField] private DynamicJoystick joystick;
         float _hordeRadius;
         Horde _horde;
+
+        public float HordeWalkableLimits => _hordeWalkableLimits; 
 
         public void Init(Horde horde)
         {
@@ -83,15 +150,16 @@ public class Horde : MonoBehaviour
 
         public void FUpdate()
         {
-            
+            FindHordeRadius();
+            HordeMove(_horde._rigidbody);
         }
 
         private void FindHordeRadius()
         {
             float maxDistace = 0f;
-            for (int i = 0; i < memberList.Count; i++)
+            for (int i = 0; i < _horde._hordeManager.HordeList.Count; i++)
             {
-                var radius = Vector3.Distance(_horde.memberList[i].transform.position, _horde.centerPoint.position);
+                var radius = Vector3.Distance(_horde._hordeManager.HordeList[i].transform.position, _horde.centerPoint.position);
                 if (radius > maxDistace)
                 {
                     maxDistace = radius;
@@ -100,15 +168,21 @@ public class Horde : MonoBehaviour
             _hordeRadius = maxDistace - 0.1f;
         }
 
-        private void ForwardMove()
+        private void HordeMove(Rigidbody rigidbody)
         {
-            _horde._rigidbody.MovePosition(_horde._rigidbody.transform.forward * Time.deltaTime * _forwardSpeed);
+            rigidbody.MovePosition(new Vector3( SwerveMove(rigidbody), rigidbody.transform.position.y, ForwardMove(rigidbody))); 
         }
-        private void SwerveMove(Rigidbody rigidbody)
+
+        float ForwardMove(Rigidbody rigidbody)
         {
-            float clampedHorizontal = Mathf.Clamp(rigidbody.transform.position.x + joystick.Horizontal * _swerveSpeed * Time.deltaTime, _minHorizontalMovementBorder, _maxHorizontalMovementBorder);
-            Vector3 direction = new Vector3(clampedHorizontal, transform.position.y, transform.position.z);
-            transform.position = Vector3.MoveTowards(transform.position, direction, 1);
+            return rigidbody.position.z + Time.deltaTime * _forwardSpeed;
+        }
+        float SwerveMove(Rigidbody rigidbody)
+        {
+            /*float clampedHorizontal = */ return Mathf.Clamp(rigidbody.transform.position.x + joystick.Horizontal * _sideMoveSpeed * Time.deltaTime, (-_hordeWalkableLimits/2)+_hordeRadius, (_hordeWalkableLimits/2)-_hordeRadius);
+            //Vector3 direction = new Vector3(clampedHorizontal, rigidbody.transform.position.y, rigidbody.transform.position.z);
+            //return direction;
+            //_horde._rigidbody.MovePosition(direction);
         }
     }
 

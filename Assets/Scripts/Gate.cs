@@ -13,21 +13,26 @@ public enum OperatorType
 
 public class Gate : MonoBehaviour
 {
+    [SerializeField] Collider _collider;
     [SerializeField] private int _operatorValue;
     [SerializeField] OperatorType _operatorType;
     [SerializeField] TMP_Text _operatorText;
+
     GateManager _gateManager;
+
+    public Collider Collider => _collider;
 
     private void Awake()
     {
-        _gateManager.GetComponentInParent<GateManager>();
+        _gateManager = GetComponentInParent<GateManager>();
         SetOperatorUI();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Gate");
             _gateManager.GateTriggered();
             HordeManager.OnHordeChange?.Invoke(_operatorValue, _operatorType);
         }

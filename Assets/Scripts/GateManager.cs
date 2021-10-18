@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class GateManager : MonoBehaviour
 {
-   public void GateTriggered()
-    {
+    Gate[] gateArray;
 
+    private void Awake()
+    {
+        gateArray = GetComponentsInChildren<Gate>();
+    }
+    public void GateTriggered()
+    {
+        for (int i = 0; i < gateArray.Length; i++)
+        {
+            gateArray[i].Collider.enabled = false;
+        }
     }
 }

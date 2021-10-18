@@ -17,13 +17,16 @@ public class HordeManager : MonoBehaviour
         get => _hordeCount;
         set
         {
-            if (_hordeCount - value <= 0)
-            {
-                _hordeCount = 0;
-                //GameStateManager.state = GameState.Lose;
-            }
+            //if (_hordeCount - value <= 0)
+            //{
+            //    _hordeCount = 0;
+            //    //GameStateManager.state = GameState.Lose;
+            //}
+            _hordeCount = value;          
         }
     }
+
+    public List<Member> HordeList => hordeList;
 
     public delegate void HordeHandler(int numOfCharacter, OperatorType operatorType , Member member = null);
     public static HordeHandler OnHordeChange;
@@ -58,7 +61,9 @@ public class HordeManager : MonoBehaviour
                 HordeCount -= changeCount;
                 break;
             case OperatorType.Mul:
+                Debug.Log("hordeCount: " + HordeCount +" - change value : " + changeCount);
                 var mulCount = (HordeCount * changeCount) - HordeCount;
+                Debug.Log(mulCount);
                 SpawnMember(mulCount, memberSpawnTransform);
                 HordeCount += mulCount;
                 break;
@@ -78,8 +83,8 @@ public class HordeManager : MonoBehaviour
             var spawned = poolManager.SpawnFromPool("Member", parent.position, Quaternion.identity);
 
             spawned.transform.SetParent(parent);
-            spawned.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * 3);
-            spawned.transform.position = new Vector3(spawned.transform.position.x, 0.2f, spawned.transform.position.z);
+            spawned.GetComponent<Rigidbody>().AddForce(Vector3.forward * 2 , ForceMode.Impulse);
+            spawned.transform.position = new Vector3(spawned.transform.position.x, parent.position.y, spawned.transform.position.z);
             spawned.transform.DOScale(0.6f, 1);
 
             hordeList.Add(spawned.GetComponent<Member>());
