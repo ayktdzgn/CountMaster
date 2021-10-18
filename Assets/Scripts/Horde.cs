@@ -56,7 +56,7 @@ public class Horde : MonoBehaviour
 
     private void PullCenter(int numOfCharacter, OperatorType operatorType, Member member)
     {
-        SetMembersHordePosition();
+        if(operatorType == OperatorType.Add || operatorType == OperatorType.Mul)SetMembersHordePosition();
         tempTime = 0;
     }
 
@@ -136,7 +136,6 @@ public class Horde : MonoBehaviour
                 }
             }
             _hordeRadius = maxDistace - 0.1f;
-            Debug.Log(_hordeRadius);
         }
 
         private void HordeMove(Rigidbody rigidbody)
