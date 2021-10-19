@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum OperatorType
 {
@@ -17,6 +18,10 @@ public class Gate : MonoBehaviour
     [SerializeField] private int _operatorValue;
     [SerializeField] OperatorType _operatorType;
     [SerializeField] TMP_Text _operatorText;
+
+    [SerializeField] Color blueColor;
+    [SerializeField] Color redColor;
+    [SerializeField] Image panelImage;
 
     GateManager _gateManager;
 
@@ -43,15 +48,19 @@ public class Gate : MonoBehaviour
         {
             case OperatorType.Add:
                 _operatorText.text = "+" + _operatorValue.ToString();
+                panelImage.color = blueColor;
                 break;
             case OperatorType.Mul:
                 _operatorText.text = "x" + _operatorValue.ToString();
+                panelImage.color = blueColor;
                 break;
             case OperatorType.Sub:
                 _operatorText.text = "-" + _operatorValue.ToString();
+                panelImage.color = redColor;
                 break;
             case OperatorType.Div:
                 _operatorText.text = "÷" + _operatorValue.ToString();
+                panelImage.color = redColor;
                 break;
         }
     }

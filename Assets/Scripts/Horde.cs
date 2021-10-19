@@ -49,7 +49,7 @@ public class Horde : MonoBehaviour
                 _hordeManager.HordeList[i].Rigidbody.isKinematic = false;
                 _hordeManager.HordeList[i].PullMemberToCenter(centerPoint.position,_rigidbody);
                 if(tempTime>= pullCenterTime)_hordeManager.HordeList[i].Rigidbody.isKinematic = true;
-                if (tempTime <= 0.6f) _hordeMoveControl.FindHordeRadius();
+                if (tempTime <= pullCenterTime - 0.1f) _hordeMoveControl.FindHordeRadius();
             }
         }
     }
