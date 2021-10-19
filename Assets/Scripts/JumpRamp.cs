@@ -6,13 +6,15 @@ using UnityEngine;
 public class JumpRamp : MonoBehaviour
 {
     [SerializeField]float yHeight;
+    [SerializeField] float duration = 2f;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            var randomHeight = Random.Range(yHeight, yHeight+1);
             other.GetComponent<Member>().Rigidbody.isKinematic = true;
-            other.gameObject.transform.DOLocalJump(other.gameObject.transform.localPosition , yHeight , 1 , 2f);
+            other.gameObject.transform.DOLocalJump(other.gameObject.transform.localPosition , randomHeight, 1 , duration);
         }
     }
 }
