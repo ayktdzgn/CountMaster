@@ -16,16 +16,22 @@ public class Horde : MonoBehaviour
     [SerializeField] HordeManager _hordeManager;
     [SerializeField] HordeMoveControl _hordeMoveControl;
 
+    public delegate void HordeAttackHandler(bool isPlayerMovementFreezed);
+    public static HordeAttackHandler OnPlayerAttackHandler;
+
+    bool isHordeAttacking;
     float tempTime = Mathf.Infinity;
     private float _smoothTime = 0.1f;
 
     private void Awake()
     {
+        OnPlayerAttackHandler += HordeAttackStatus;
         HordeManager.OnHordeChange += PullCenter;
     }
 
     private void OnDestroy()
     {
+        OnPlayerAttackHandler -= HordeAttackStatus;
         HordeManager.OnHordeChange -= PullCenter;
     }
 
@@ -39,7 +45,15 @@ public class Horde : MonoBehaviour
 
     void FixedUpdate()
     {
-        _hordeMoveControl.FUpdate();
+        if (!isHordeAttacking)
+        {
+            _hordeMoveControl.FUpdate();
+        }
+        else
+        {
+            _hordeMoveControl.HordeAttackMovement();
+        }
+
         if (tempTime < pullCenterTime)
         {
             tempTime += Time.fixedDeltaTime;
@@ -51,6 +65,14 @@ public class Horde : MonoBehaviour
                 if(tempTime>= pullCenterTime)_hordeManager.HordeList[i].Rigidbody.isKinematic = true;
                 if (tempTime <= pullCenterTime - 0.1f) _hordeMoveControl.FindHordeRadius();
             }
+        }
+    }
+
+    private void HordeAttackStatus(bool val)
+    {
+        if (val != isHordeAttacking)
+        {
+            isHordeAttacking = val;
         }
     }
 
@@ -122,6 +144,11 @@ public class Horde : MonoBehaviour
         public void FUpdate()
         {
             HordeMove(_horde._rigidbody);
+        }
+
+        public void HordeAttackMovement()
+        {
+            _horde.transform.Translate(_horde.transform.forward * Time.deltaTime * _forwardSpeed * 0.1f);
         }
 
         public void FindHordeRadius()

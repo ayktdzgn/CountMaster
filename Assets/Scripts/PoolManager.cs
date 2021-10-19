@@ -62,6 +62,7 @@ public class PoolManager: MonoBehaviour
         if (poolDictionary[tag].Contains(gameObject))
         {
             gameObject.SetActive(false);
+            gameObject.transform.SetParent(transform);
         }
     }
 

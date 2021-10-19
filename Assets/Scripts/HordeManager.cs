@@ -17,11 +17,11 @@ public class HordeManager : MonoBehaviour
         get => _hordeCount;
         set
         {
-            //if (_hordeCount - value <= 0)
-            //{
-            //    _hordeCount = 0;
-            //    //GameStateManager.state = GameState.Lose;
-            //}
+            if (value <= 0)
+            {
+                _hordeCount = 0;
+                //GameStateManager.state = GameState.Lose;
+            }
             _hordeCount = value;          
         }
     }
@@ -56,9 +56,11 @@ public class HordeManager : MonoBehaviour
                 HordeCount += changeCount;
                 break;
             case OperatorType.Sub:
-                var tempMember = member != null ? member.gameObject : hordeList[0].gameObject;
-                DeSpawnMember(changeCount , tempMember);
-                HordeCount -= changeCount;
+                if (member != null) 
+                {
+                    DeSpawnMember(member);
+                    HordeCount -= changeCount;
+                }              
                 break;
             case OperatorType.Mul:
                 var mulCount = (HordeCount * changeCount) - HordeCount;
@@ -67,11 +69,12 @@ public class HordeManager : MonoBehaviour
                 break;
             case OperatorType.Div:
                 var divCount = HordeCount - (HordeCount / changeCount);
-                DeSpawnMember(divCount , hordeList[0].gameObject);
+                DeSpawnMember(divCount , hordeList);
                 HordeCount -= divCount;
                 break;
         }
-        OnHordeCountChange?.Invoke(_hordeCount);
+        Debug.Log(HordeCount);
+        OnHordeCountChange?.Invoke(HordeCount);
     }
 
     void SpawnMember(int spawnCount, Transform parent)
@@ -89,13 +92,21 @@ public class HordeManager : MonoBehaviour
         }
     }
 
-    void DeSpawnMember(int deSpawnCount, GameObject deSpawnObject)
+    void DeSpawnMember(int deSpawnCount, List<Member> deSpawnObjects)
     {
         for (int i = 0; i < deSpawnCount; i++)
         {
-            poolManager.DestoryFromPool("Member", deSpawnObject);
+            poolManager.DestoryFromPool("Member", deSpawnObjects[i].gameObject);
 
-            hordeList.Remove(deSpawnObject.GetComponent<Member>());
+            hordeList.Remove(deSpawnObjects[i]);
         }       
+    }
+
+    void DeSpawnMember(Member deSpawnObject)
+    {
+
+        poolManager.DestoryFromPool("Member", deSpawnObject.gameObject);
+        hordeList.Remove(deSpawnObject);
+        
     }
 }

@@ -7,6 +7,13 @@ public class Member : MonoBehaviour
     private Rigidbody _rigidbody;
     public Rigidbody Rigidbody => _rigidbody;
 
+    bool isHitByEnemy;
+
+    private void OnEnable()
+    {
+        isHitByEnemy = false;
+    }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -14,9 +21,13 @@ public class Member : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") && !isHitByEnemy)
         {
+            isHitByEnemy = true;
+            var enemy = collision.gameObject.GetComponent<Enemy>();
+            enemy.IsHitByMember = true;
             HordeManager.OnHordeChange?.Invoke(1, OperatorType.Sub , this);
+            EnemySpawner.OnEnemyDestory?.Invoke(enemy.ParentSpawnerID,collision.gameObject);
         }
         if (collision.gameObject.CompareTag("Obstacle"))
         {
@@ -26,10 +37,7 @@ public class Member : MonoBehaviour
 
     public void PullMemberToCenter(Vector3 center, Rigidbody parentRigidbody)
     {
-        //if ((center - _rigidbody.position).sqrMagnitude > 0.0001f)
-        //{ // if vectors are different
-            AddForce(center, parentRigidbody);
-        //}
+        AddForce(center, parentRigidbody);
     }
     private void AddForce(Vector3 center, Rigidbody parentRigidbody)
     {
