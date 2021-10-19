@@ -24,10 +24,15 @@ public class Member : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy") && !isHitByEnemy)
         {
             isHitByEnemy = true;
+
             var enemy = collision.gameObject.GetComponent<Enemy>();
+            if (!enemy.IsHitByMember)
+            {
+                HordeManager.OnHordeChange?.Invoke(1, OperatorType.Sub, this);
+                EnemySpawner.OnEnemyDestory?.Invoke(enemy.ParentSpawnerID, collision.gameObject);
+            }
+
             enemy.IsHitByMember = true;
-            HordeManager.OnHordeChange?.Invoke(1, OperatorType.Sub , this);
-            EnemySpawner.OnEnemyDestory?.Invoke(enemy.ParentSpawnerID,collision.gameObject);
         }
         if (collision.gameObject.CompareTag("Obstacle"))
         {

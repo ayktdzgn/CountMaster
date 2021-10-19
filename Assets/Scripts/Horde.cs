@@ -148,7 +148,7 @@ public class Horde : MonoBehaviour
 
         public void HordeAttackMovement()
         {
-            _horde.transform.Translate(_horde.transform.forward * Time.deltaTime * _forwardSpeed * 0.1f);
+            _horde.transform.Translate(_horde.transform.forward * Time.deltaTime * _forwardSpeed * 0.075f);
         }
 
         public void FindHordeRadius()
