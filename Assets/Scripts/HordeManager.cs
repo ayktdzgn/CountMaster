@@ -20,7 +20,7 @@ public class HordeManager : MonoBehaviour
             if (value <= 0)
             {
                 _hordeCount = 0;
-                //GameStateManager.state = GameState.Lose;
+                FindObjectOfType<GameManager>().gameState = GameState.Lose;
             }
             _hordeCount = value;          
         }
@@ -73,7 +73,6 @@ public class HordeManager : MonoBehaviour
                 HordeCount -= divCount;
                 break;
         }
-        Debug.Log(HordeCount);
         OnHordeCountChange?.Invoke(HordeCount);
     }
 

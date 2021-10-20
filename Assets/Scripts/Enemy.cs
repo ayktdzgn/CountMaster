@@ -53,6 +53,6 @@ public class Enemy : MonoBehaviour
 
     void Attack(Horde targetHorde)
     {
-        this.transform.DOMove(targetHorde.transform.position, 1.5f);
+        this.transform.DOMove(targetHorde.transform.position, 2f);
     }
 }
