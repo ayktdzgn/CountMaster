@@ -152,8 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 588c031aead2e5f4e92c23780e8057c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horde: {fileID: 0}
-  finishPoint: {fileID: 0}
+  levels: {fileID: 11400000, guid: a7d71229410ddd54f944ed67b18139ae, type: 2}
   gameState: 1
 --- !u!4 &501248010
 Transform:

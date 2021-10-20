@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6528558400579874586}
   - component: {fileID: 6528558400579874587}
-  - component: {fileID: 6528558400579874580}
+  - component: {fileID: 1337882959312253754}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -45,11 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3f78286e0fa0284082dbec7fc0b2379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyZoneTrigger: {fileID: 6528558400579874580}
+  enemySpawnerID: 0
+  enemyZoneTrigger: {fileID: 1337882959312253754}
   enemySpawnCount: 20
   enemyUI: {fileID: 6528558401110155548}
---- !u!135 &6528558400579874580
-SphereCollider:
+--- !u!65 &1337882959312253754
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -59,8 +60,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 6.14
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 26.62, y: 11.25, z: 14.01}
+  m_Center: {x: 0, y: 0, z: -1.29}
 --- !u!1 &6528558401026740424
 GameObject:
   m_ObjectHideFlags: 0

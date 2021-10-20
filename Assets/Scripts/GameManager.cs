@@ -11,16 +11,12 @@ public enum GameState
 }
 public class GameManager : MonoBehaviour
 {
-    string level;
-    [SerializeField] Horde horde;
-    [SerializeField] FinishPoint finishPoint;
+    public LevelManager levels;
     public GameState gameState;
 
     private void Awake()
     {
-
-        level = SceneManager.GetActiveScene().name;
-        Debug.Log(level);
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Update()
@@ -28,34 +24,55 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case GameState.Play:
-                finishPoint.ValueChangeOnUI(horde.transform.position);
+                
                 break;
             case GameState.Win:
-                PlayerPrefs.SetInt(level.ToString() , 1);
+                PlayerPrefs.SetInt(SceneManager.GetActiveScene().name,1);
                 PlayerPrefs.Save();
-
-                for (int i = 1; i < SceneManager.sceneCountInBuildSettings; i++)
-                {
-                    if (!PlayerPrefs.HasKey(i.ToString()))
-                    {
-                        PlayerPrefs.SetInt(i.ToString(), 0);
-                        PlayerPrefs.Save();
-                    }
-
-                    if (PlayerPrefs.GetInt(i.ToString()) < 1)
-                    {
-                        Debug.Log("level : " + i.ToString());
-                        SceneManager.LoadScene(i.ToString());
-                    }
-                }
-             
-                SceneManager.LoadScene(Random.Range(1, SceneManager.sceneCount));
+                LoadNewLevel();
                 break;
             case GameState.Lose:
-                SceneManager.LoadScene(level);
+                ResetLevel();
                 break;
             default:
                 break;
         }
+    }
+
+    void LoadNewLevel()
+    {
+        gameState = GameState.Play;
+
+        for (int i = 0; i < levels.levelSet.Count; i++)
+        {
+            if (!PlayerPrefs.HasKey(levels.levelSet[i].levelName))
+            {
+                Debug.Log("Create Key - " + levels.levelSet[i].levelName);
+                PlayerPrefs.SetInt(levels.levelSet[i].levelName , 0);
+                PlayerPrefs.Save();
+                
+            }
+            if(PlayerPrefs.GetInt(levels.levelSet[i].levelName) < 1)
+            {               
+                 SceneManager.LoadScene(levels.levelSet[i].levelName);
+                 return;
+                
+            }
+        }
+
+        var randomLevelIndex = Random.Range(0, levels.levelSet.Count);
+        Debug.Log("random level");
+        SceneManager.LoadScene(levels.levelSet[randomLevelIndex].levelName);
+    }
+
+    void ResetLevel()
+    {
+        gameState = GameState.Play;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void DeleteSavedDatas()
+    {
+        PlayerPrefs.DeleteAll();
     }
 }

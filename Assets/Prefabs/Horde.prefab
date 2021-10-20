@@ -122,20 +122,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8d550bc663de7a48861fb7f22b5147b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startMemberCount: 30
+  startMemberCount: 4
   centerPoint: {fileID: 1132715323964615052}
-  hordeRingMemberCount: 050000000a000000140000001e00000028000000
+  hordeRingMemberCount: 050000000a000000140000001e000000280000003c0000004600000050000000
   hordeRingMemberDistance:
   - 0.6
   - 1.2
   - 1.8
   - 2.4
   - 3
+  - 3.6
+  - 4.2
+  - 4.8
   pullCenterTime: 1.5
   _rigidbody: {fileID: 1132715322849368106}
   _hordeManager: {fileID: 0}
   _hordeMoveControl:
-    _forwardSpeed: 10
+    _forwardSpeed: 20
     _sideMoveSpeed: 75
     _hordeWalkableLimits: 28
     joystick: {fileID: 0}
