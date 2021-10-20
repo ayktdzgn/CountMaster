@@ -32,12 +32,12 @@ public class Test : MonoBehaviour
                 {
                     if (objectInStep % 2 == 0)
                     {
-                        objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), i, 0);
+                        objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position .y + i, 0);
                         cift+= 2;
                     }
                     else
                     {
-                        objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), i, 0);
+                        objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y + i, 0);
                         tek += 2;
                     }
 
@@ -53,12 +53,12 @@ public class Test : MonoBehaviour
                     
                     if (objectInStep % 2 == 0)
                     {
-                        objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), i, 0);
+                        objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y + i, 0);
                         cift += 2;
                     }
                     else
                     {
-                        objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), i, 0);
+                        objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y + i, 0);
                         tek += 2;
                     }
 
