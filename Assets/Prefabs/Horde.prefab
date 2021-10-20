@@ -86,6 +86,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1132715322849368107}
   - component: {fileID: 1132715322849368104}
+  - component: {fileID: 5985987025044970691}
   - component: {fileID: 1132715322849368106}
   m_Layer: 0
   m_Name: Horde
@@ -142,6 +143,18 @@ MonoBehaviour:
     _sideMoveSpeed: 75
     _hordeWalkableLimits: 28
     joystick: {fileID: 0}
+--- !u!114 &5985987025044970691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132715322849368105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6788f1815524aee4f8e5a455e9ac6c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &1132715322849368106
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -23,6 +23,8 @@ public class Horde : MonoBehaviour
     float tempTime = Mathf.Infinity;
     private float _smoothTime = 0.1f;
 
+    public HordeManager HordeManager => _hordeManager;
+
     private void Awake()
     {
         OnPlayerAttackHandler += HordeAttackStatus;

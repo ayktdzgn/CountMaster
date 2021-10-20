@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,15 +17,17 @@ public class Test : MonoBehaviour
         Calculate(count);
         ReadList();
 
-        MakeTower();
+        //MakeTower();
+        StartCoroutine(MakeTowerStepByStep());
+        
     }
 
     void MakeTower()
     {
         int objectIndex = 0;
-        for (int i = 0; i < stepList.Count; i++)
+        for (int i = stepList.Count - 1; i >= 0; i--)
         {
-            if(stepList[i] % 2 == 0)
+            if (stepList[i] % 2 == 0)
             {
                 int cift = 1;
                 int tek = 1;
@@ -32,12 +35,14 @@ public class Test : MonoBehaviour
                 {
                     if (objectInStep % 2 == 0)
                     {
-                        objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position .y + i, 0);
-                        cift+= 2;
+                        objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y, 0);
+                        objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + (stepList.Count - 1) - i, 1);
+                        cift += 2;
                     }
                     else
                     {
-                        objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y + i, 0);
+                        objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y, 0);
+                        objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + (stepList.Count - 1) - i, 1);
                         tek += 2;
                     }
 
@@ -50,21 +55,87 @@ public class Test : MonoBehaviour
                 int tek = 2;
                 for (int objectInStep = 0; objectInStep < stepList[i]; objectInStep++)
                 {
-                    
+
                     if (objectInStep % 2 == 0)
                     {
-                        objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y + i, 0);
+                        objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y, 0);
+                        objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + (stepList.Count - 1) - i, 1);
+
                         cift += 2;
                     }
                     else
                     {
-                        objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y + i, 0);
+                        objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y, 0);
+                        objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + (stepList.Count - 1) - i, 1);
+
                         tek += 2;
                     }
 
                     objectIndex++;
                 }
-            }          
+            }
+        }
+    }
+
+    IEnumerator MakeTowerStepByStep()
+    {
+        int step = 0;
+        for (int s = 0; s < stepList.Count; s++)
+        {
+            int objectIndex = 0;
+            step++;
+            for (int i = 0; i < s; i++)  //---> Basamak
+            {
+                if (stepList[i] % 2 == 0)
+                {
+                    int cift = 1;
+                    int tek = 1;
+                    for (int objectInStep = 1; objectInStep <= stepList[i]; objectInStep++)
+                    {
+                        if (objectInStep % 2 == 0)
+                        {
+                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y, 0);
+                            //objects[objectIndex].transform.DOMove(new Vector3(objects[objectIndex].transform.position.x, objects[objectIndex].transform.position.y + 1, objects[objectIndex].transform.position.z), 1);
+                            objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1, 1);
+                            cift += 2;
+                        }
+                        else
+                        {
+                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y, 0);
+                            objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1, 1);
+                            tek += 2;
+                        }
+
+                        objectIndex++;
+                    }
+                }
+                else
+                {
+                    int cift = 0;
+                    int tek = 2;
+                    for (int objectInStep = 0; objectInStep < stepList[i]; objectInStep++)
+                    {
+
+                        if (objectInStep % 2 == 0)
+                        {
+                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y, 0);
+                            objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1, 1);
+
+                            cift += 2;
+                        }
+                        else
+                        {
+                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y, 0);
+                            objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1, 1);
+
+                            tek += 2;
+                        }
+
+                        objectIndex++;
+                    }
+                }
+            }
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -105,9 +176,9 @@ public class Test : MonoBehaviour
     void ReadList()
     {
         stepList.Sort();
-        foreach (var item in stepList)
-        {
-            Debug.Log(item);
-        }
+        //foreach (var item in stepList)
+        //{
+        //    Debug.Log(item);
+        //}
     }
 }
