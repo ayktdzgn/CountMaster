@@ -21,6 +21,7 @@ public class FinishPoint : MonoBehaviour
             if (!isEndSequenceStart)
             {
                 isEndSequenceStart = true;
+                Debug.Log("Finish Point Horde List Count : " + horde.HordeManager.HordeList.Count);
                 _endSequence.PlayEndSequence(horde);
             }
         }

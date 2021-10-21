@@ -105,10 +105,11 @@ public class HordeManager : MonoBehaviour
 
     void DeSpawnMember(Member deSpawnObject)
     {
-
-        poolManager.DestoryFromPool("Member", deSpawnObject.gameObject);
-        hordeList.Remove(deSpawnObject);
-        HordeCount -= 1;
-
+        var isRemove = hordeList.Remove(deSpawnObject);
+        if (isRemove)
+        {
+            HordeCount -= 1;
+            poolManager.DestoryFromPool("Member", deSpawnObject.gameObject);
+        }
     }
 }

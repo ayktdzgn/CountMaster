@@ -7,6 +7,8 @@ public class Member : MonoBehaviour
     private Rigidbody _rigidbody;
     public Rigidbody Rigidbody => _rigidbody;
 
+    Enemy hitEnemy;
+
     public bool IsTriggerByEndSequence { get => isTriggerByEndSequence; set => isTriggerByEndSequence = value; }
 
     bool isHitByEnemy;
@@ -24,15 +26,27 @@ public class Member : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && !isHitByEnemy)
+        if (collision.gameObject.CompareTag("Enemy") && (!isHitByEnemy||(hitEnemy!=null && !hitEnemy.gameObject.activeSelf)))
         {
-            //isHitByEnemy = true;
+            Enemy enemy;
+            if (hitEnemy == null) 
+            {
+                enemy = collision.gameObject.GetComponent<Enemy>();
+            }
+            else
+            {
+                enemy = hitEnemy;
+            }
 
-            var enemy = collision.gameObject.GetComponent<Enemy>();
+            isHitByEnemy = true;
+            hitEnemy = enemy;
+
+            gameObject.layer = 8;
+            enemy.gameObject.layer = 8;
             if (!enemy.IsHitByMember)
             {
-                HordeManager.OnHordeChange?.Invoke(1, OperatorType.Sub, this);
-                EnemySpawner.OnEnemyDestory?.Invoke(enemy.ParentSpawnerID, collision.gameObject);
+               HordeManager.OnHordeChange?.Invoke(1, OperatorType.Sub, this);
+               EnemySpawner.OnEnemyDestory?.Invoke(enemy.ParentSpawnerID, enemy);
             }
 
             enemy.IsHitByMember = true;

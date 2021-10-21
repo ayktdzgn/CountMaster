@@ -18,7 +18,6 @@ public class EndSequencePlatformManager : MonoBehaviour
                 FindObjectOfType<GameManager>().gameState = GameState.Win;
             }
             hordeCountOnPlatform = value;
-            Debug.Log(hordeCountOnPlatform);
         }
     }
 }

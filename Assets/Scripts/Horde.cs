@@ -146,7 +146,7 @@ public class Horde : MonoBehaviour
         public void HordeAttackMovement(Transform target)
         {
             if(target != null)
-                _attackTweenID =  _horde.transform.DOMove(target.position, 20f).intId;
+                _attackTweenID =  _horde.transform.DOMove(target.position, 5f).intId;
         }
 
         public void FindHordeRadius()

@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public delegate void EnemySpawnerHandler(int value);
-    public delegate void EnemyDestoryHandler(int spawnerID, GameObject obj);
+    public delegate void EnemyDestoryHandler(int spawnerID, Enemy enemy);
     public static EnemySpawnerHandler OnEnemyCountChange;
     public static EnemyDestoryHandler OnEnemyDestory;
 
@@ -95,14 +95,17 @@ public class EnemySpawner : MonoBehaviour
         CurrentEnemyCount += spawnCount;
     }
 
-    private void DestroyEnemy(int id, GameObject obj)
+    private void DestroyEnemy(int id, Enemy enemy)
     {
         if (id == enemySpawnerID)
         {
-            poolManager.DestoryFromPool("Enemy", obj);
-            enemyList.Remove(obj.GetComponent<Enemy>());
-
-            CurrentEnemyCount--;
+            var isRemove = enemyList.Remove(enemy);
+            Debug.Log(isRemove , enemy.gameObject);
+            if (isRemove)
+            {
+                CurrentEnemyCount--;
+                poolManager.DestoryFromPool("Enemy", enemy.gameObject);
+            }
         }       
     }
 

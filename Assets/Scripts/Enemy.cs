@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     bool isAttacking;
     Horde _targetHorde;
     Rigidbody _rigidbody;
+    Animator _animator;
     bool isHitByMember;
     int parentSpawnerID;
 
@@ -25,6 +26,12 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
+    }
+
+    public void PlayRunAnimation()
+    {
+
     }
 
     public void AddForce(Vector3 center)

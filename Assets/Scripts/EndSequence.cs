@@ -21,6 +21,11 @@ public class EndSequence : MonoBehaviour
         OnHordeEndSequenceHandler?.Invoke(true);
 
         objects = _horde.HordeManager.HordeList;
+        foreach (var obj in objects)
+        {
+            obj.transform.localPosition = new Vector3(obj.transform.localPosition.x,0, obj.transform.localPosition.z);
+        }
+
         OnCameraEndSequenceHandler?.Invoke(objects[0].transform);
 
         Calculate(_horde.HordeManager.HordeCount);
@@ -44,13 +49,13 @@ public class EndSequence : MonoBehaviour
                     {
                         if (objectInStep % 2 == 0)
                         {
-                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y, _horde.transform.position.z);                           
+                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.3f), objects[objectIndex].transform.position.y, _horde.transform.position.z);                           
                             if(s<stepList.Count) objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1.3f, 0.2f);
                             cift += 2;
                         }
                         else
                         {
-                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
+                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.3f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
                             if (s < stepList.Count) objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1.3f, 0.2f);
                             tek += 2;
                         }
@@ -67,14 +72,14 @@ public class EndSequence : MonoBehaviour
 
                         if (objectInStep % 2 == 0)
                         {
-                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
+                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.3f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
                             if (s < stepList.Count) objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1.3f, 0.2f);
 
                             cift += 2;
                         }
                         else
                         {
-                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
+                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.3f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
                             if (s < stepList.Count) objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1.3f, 0.2f);
 
                             tek += 2;
