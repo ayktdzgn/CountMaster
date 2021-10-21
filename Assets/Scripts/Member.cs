@@ -26,7 +26,7 @@ public class Member : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !isHitByEnemy)
         {
-            isHitByEnemy = true;
+            //isHitByEnemy = true;
 
             var enemy = collision.gameObject.GetComponent<Enemy>();
             if (!enemy.IsHitByMember)
@@ -50,7 +50,6 @@ public class Member : MonoBehaviour
     private void AddForce(Vector3 center, Rigidbody parentRigidbody)
     {
         var relativeTarget = center - _rigidbody.position;
-        //var dir = relativeTarget.normalized;
 
         _rigidbody.velocity = new Vector3(relativeTarget.x + parentRigidbody.velocity.x , relativeTarget.y, relativeTarget.z + parentRigidbody.velocity.z);
     }

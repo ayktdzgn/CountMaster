@@ -16,25 +16,30 @@ public class Horde : MonoBehaviour
     [SerializeField] HordeManager _hordeManager;
     [SerializeField] HordeMoveControl _hordeMoveControl;
 
-    public delegate void HordeAttackHandler(bool isPlayerMovementFreezed);
+    public delegate void HordeAttackHandler(bool isPlayerMovementFreezed,Transform enemySpawner);
     public static HordeAttackHandler OnPlayerAttackHandler;
 
     bool isHordeAttacking;
+    bool isEndSequence;
     float tempTime = Mathf.Infinity;
     private float _smoothTime = 0.1f;
+    Transform _enemyTarget;
 
     public HordeManager HordeManager => _hordeManager;
+    public bool IsEndSequence => isEndSequence;
 
     private void Awake()
     {
         OnPlayerAttackHandler += HordeAttackStatus;
         HordeManager.OnHordeChange += PullCenter;
+        EndSequence.OnHordeEndSequenceHandler += EndSequenceStatus;
     }
 
     private void OnDestroy()
     {
         OnPlayerAttackHandler -= HordeAttackStatus;
         HordeManager.OnHordeChange -= PullCenter;
+        EndSequence.OnHordeEndSequenceHandler -= EndSequenceStatus;
     }
 
     void Start()
@@ -46,14 +51,16 @@ public class Horde : MonoBehaviour
     }
 
     void FixedUpdate()
-    {
+    {       
         if (!isHordeAttacking)
         {
+            if (DOTween.Play(transform) == _hordeMoveControl.AttackTweenID) DOTween.Kill(transform);
             _hordeMoveControl.FUpdate();
         }
         else
         {
-            _hordeMoveControl.HordeAttackMovement();
+            if(DOTween.Play(transform) != _hordeMoveControl.AttackTweenID)
+            _hordeMoveControl.HordeAttackMovement(_enemyTarget);
         }
 
         if (tempTime < pullCenterTime)
@@ -70,11 +77,20 @@ public class Horde : MonoBehaviour
         }
     }
 
-    private void HordeAttackStatus(bool val)
+    private void HordeAttackStatus(bool val,Transform target)
     {
         if (val != isHordeAttacking)
         {
             isHordeAttacking = val;
+            _enemyTarget = target;
+        }
+    }
+
+    private void EndSequenceStatus(bool status)
+    {
+        if (status != isEndSequence)
+        {
+            isEndSequence = status;
         }
     }
 
@@ -87,44 +103,13 @@ public class Horde : MonoBehaviour
     public void SetMembersHordePosition()
     {
         Vector3 movePosition = Vector3.zero;
-        List<Vector3> targetPositionList = GetPositionListAround(movePosition, hordeRingMemberDistance, hordeRingMemberCount);
+        List<Vector3> targetPositionList = PositionSetter.GetPositionListAround(movePosition, hordeRingMemberDistance, hordeRingMemberCount);
 
         for (int i = 0; i < _hordeManager.HordeList.Count; i++)
         {
             _hordeManager.HordeList[i].transform.DOLocalMove(targetPositionList[i], 0.5f);
         }
     }
-
-    
-    List<Vector3> GetPositionListAround(Vector3 startPos, float[] ringDistanceArray, int[] ringPositionCountArray)
-    {
-        List<Vector3> positionList = new List<Vector3>();
-        positionList.Add(startPos);
-        for (int i = 0; i < ringDistanceArray.Length; i++)
-        {
-            positionList.AddRange(GetPositionListAround(startPos , ringDistanceArray[i] , ringPositionCountArray[i]));
-        }
-        return positionList;
-    }
-
-    List<Vector3> GetPositionListAround(Vector3 startPos, float distance , int positionCount)
-    {
-        List<Vector3> positionList = new List<Vector3>();
-        for (int i = 0; i < positionCount; i++)
-        {
-            float angle = i * (360 / positionCount);
-            Vector3 dir = ApplyRotationVector(new Vector3(1, 0), angle);
-            Vector3 pos = startPos + dir * distance;
-            positionList.Add(pos);
-        }
-        return positionList;
-    }
-
-    Vector3 ApplyRotationVector(Vector3 vec , float angle)
-    {
-        return Quaternion.Euler(0,angle,0) * vec;
-    }
-
 
     [Serializable]
     public struct HordeMoveControl
@@ -135,8 +120,11 @@ public class Horde : MonoBehaviour
         [SerializeField] private DynamicJoystick joystick;
         float _hordeRadius;
         Horde _horde;
+        int _attackTweenID;
 
-        public float HordeWalkableLimits => _hordeWalkableLimits; 
+        public float HordeWalkableLimits => _hordeWalkableLimits;
+
+        public int AttackTweenID => _attackTweenID;
 
         public void Init(Horde horde)
         {
@@ -145,12 +133,20 @@ public class Horde : MonoBehaviour
 
         public void FUpdate()
         {
-            HordeMove(_horde._rigidbody);
+            if (!_horde.isEndSequence)
+            {
+                HordeMove(_horde._rigidbody);
+            }
+            else
+            {
+                HordeEndSequenceMove(_horde._rigidbody);
+            }           
         }
 
-        public void HordeAttackMovement()
+        public void HordeAttackMovement(Transform target)
         {
-            _horde.transform.Translate(_horde.transform.forward * Time.deltaTime * _forwardSpeed * 0.075f);
+            if(target != null)
+                _attackTweenID =  _horde.transform.DOMove(target.position, 20f).intId;
         }
 
         public void FindHordeRadius()
@@ -165,6 +161,12 @@ public class Horde : MonoBehaviour
                 }
             }
             _hordeRadius = maxDistace - 0.1f;
+        }
+
+        private void HordeEndSequenceMove(Rigidbody rigidbody)
+        {
+            var dir = 0 - Mathf.Clamp01(rigidbody.transform.position.x);
+            rigidbody.MovePosition(new Vector3(dir * Time.deltaTime * 0.075f, rigidbody.transform.position.y, ForwardMove(rigidbody)));
         }
 
         private void HordeMove(Rigidbody rigidbody)

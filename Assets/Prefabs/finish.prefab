@@ -347,6 +347,7 @@ GameObject:
   - component: {fileID: 3574727523891065655}
   - component: {fileID: 4237934609371163019}
   - component: {fileID: 4237934609371163020}
+  - component: {fileID: 2888268198496499102}
   m_Layer: 0
   m_Name: finish
   m_TagString: Untagged
@@ -382,6 +383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa1301b61b033b44b8fc930e7c04958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  horde: {fileID: 0}
+  finishBarUI: {fileID: 0}
 --- !u!65 &4237934609371163020
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -395,6 +398,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 21.78, y: 1, z: 1}
   m_Center: {x: 0, y: 1.11, z: 0}
+--- !u!114 &2888268198496499102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4237934609371163021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6788f1815524aee4f8e5a455e9ac6c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4240044217533597540
 GameObject:
   m_ObjectHideFlags: 0

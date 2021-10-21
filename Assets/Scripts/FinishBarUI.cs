@@ -5,16 +5,9 @@ using UnityEngine.UI;
 
 public class FinishBarUI : MonoBehaviour
 {
-    [SerializeField] Horde horde;
-    [SerializeField] FinishPoint finishPoint;
-    public Slider slider;
+    [SerializeField] Slider slider;
 
-    private void Update()
-    {
-        ValueChangeOnUI();
-    }
-
-    public void ValueChangeOnUI()
+    public void ValueChangeOnUI(Horde horde, FinishPoint finishPoint)
     {
         slider.value = horde.transform.position.z / finishPoint.transform.position.z;
     }

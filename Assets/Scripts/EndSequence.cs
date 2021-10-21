@@ -9,13 +9,13 @@ public class EndSequence : MonoBehaviour
     List<int> stepList = new List<int>();
     List<Member> objects = new List<Member>();
 
-    private void Awake()
-    {
-        _horde = GetComponent<Horde>();
-    }
+    public delegate void HordeEndSequenceHandler(bool status);
+    public static HordeEndSequenceHandler OnHordeEndSequenceHandler;
 
-    public void PlayEndSequence()
+    public void PlayEndSequence(Horde horde)
     {
+        _horde = horde;
+        OnHordeEndSequenceHandler?.Invoke(true);
 
         objects = _horde.HordeManager.HordeList;
 

@@ -10,6 +10,7 @@ public class EnemySpawner : MonoBehaviour
     public static EnemySpawnerHandler OnEnemyCountChange;
     public static EnemyDestoryHandler OnEnemyDestory;
 
+    [SerializeField] Transform enemyHolder;
     [SerializeField] int enemySpawnerID;
     [SerializeField] Collider enemyZoneTrigger;
     [SerializeField] int enemySpawnCount;
@@ -31,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
             else
             {
                 enemyZoneTrigger.enabled = false;
-                Horde.OnPlayerAttackHandler?.Invoke(false);
+                Horde.OnPlayerAttackHandler?.Invoke(false,null);
                 enemyUI.CloseText();
             }        
         } 
@@ -54,13 +55,9 @@ public class EnemySpawner : MonoBehaviour
             isTriggered = true;
 
             var horde = other.GetComponentInParent<Horde>();
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                var enemy = enemyList[i];
-                enemy.AttackStatus(true , horde);
-            }
+            enemyHolder.DOMove(horde.transform.position , 3f);
 
-            Horde.OnPlayerAttackHandler?.Invoke(true);
+            Horde.OnPlayerAttackHandler?.Invoke(true,transform);
         }
     }
 
@@ -68,19 +65,16 @@ public class EnemySpawner : MonoBehaviour
     {
         poolManager = PoolManager.Instance;
 
-        SpawnEnemy(enemySpawnCount , transform);
+        SpawnEnemy(enemySpawnCount , enemyHolder);
         SetEnemyHordePosition();
     }
 
     private void FixedUpdate()
     {
-        if (!isTriggered)
-        {
             for (int i = 0; i < enemyList.Count; i++)
             {
-                enemyList[i].AddForce(transform.position);
+                enemyList[i].AddForce(enemyHolder.position);
             }
-        }
     }
 
     void SpawnEnemy(int spawnCount, Transform parent)
@@ -115,41 +109,11 @@ public class EnemySpawner : MonoBehaviour
     public void SetEnemyHordePosition()
     {
         Vector3 movePosition = Vector3.zero;
-        List<Vector3> targetPositionList = GetPositionListAround(movePosition, new float[]{0.6f,1.2f,1.8f,2.4f,3f },new int[] {5,10,20,30,40 });
+        List<Vector3> targetPositionList = PositionSetter.GetPositionListAround(movePosition, new float[]{0.6f,1.2f,1.8f,2.4f,3f },new int[] {5,10,20,30,40 });
 
         for (int i = 0; i < enemyList.Count; i++)
         {
             enemyList[i].transform.DOLocalMove(targetPositionList[i], 0.5f);
         }
-    }
-
-
-    List<Vector3> GetPositionListAround(Vector3 startPos, float[] ringDistanceArray, int[] ringPositionCountArray)
-    {
-        List<Vector3> positionList = new List<Vector3>();
-        positionList.Add(startPos);
-        for (int i = 0; i < ringDistanceArray.Length; i++)
-        {
-            positionList.AddRange(GetPositionListAround(startPos, ringDistanceArray[i], ringPositionCountArray[i]));
-        }
-        return positionList;
-    }
-
-    List<Vector3> GetPositionListAround(Vector3 startPos, float distance, int positionCount)
-    {
-        List<Vector3> positionList = new List<Vector3>();
-        for (int i = 0; i < positionCount; i++)
-        {
-            float angle = i * (360 / positionCount);
-            Vector3 dir = ApplyRotationVector(new Vector3(1, 0), angle);
-            Vector3 pos = startPos + dir * distance;
-            positionList.Add(pos);
-        }
-        return positionList;
-    }
-
-    Vector3 ApplyRotationVector(Vector3 vec, float angle)
-    {
-        return Quaternion.Euler(0, angle, 0) * vec;
     }
 }

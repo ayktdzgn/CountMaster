@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class FinishPoint : MonoBehaviour
 {
-    [SerializeField]EndSequence endSequence;
+    EndSequence _endSequence;
+    [SerializeField]Horde horde;
+    [SerializeField] FinishBarUI finishBarUI;
     bool isEndSequenceStart;
+
+    private void Awake()
+    {
+        _endSequence = GetComponent<EndSequence>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -13,9 +21,13 @@ public class FinishPoint : MonoBehaviour
             if (!isEndSequenceStart)
             {
                 isEndSequenceStart = true;
-                endSequence.PlayEndSequence();
+                _endSequence.PlayEndSequence(horde);
             }
-            //FindObjectOfType<GameManager>().gameState = GameState.Win;
         }
+    }
+
+    private void Update()
+    {
+        finishBarUI.ValueChangeOnUI(horde , this);
     }
 }

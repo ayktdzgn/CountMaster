@@ -456,17 +456,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 388013252}
   m_CullTransparentMesh: 1
---- !u!114 &390821242 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5985987025044970691, guid: 87ab76d469455e8469893126858b5634, type: 3}
-  m_PrefabInstance: {fileID: 1132715323037991245}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6788f1815524aee4f8e5a455e9ac6c9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,7 +884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 256268646}
-  xMargin: 3
+  _followSpeed: 7
 --- !u!1 &974478466
 GameObject:
   m_ObjectHideFlags: 0
@@ -2294,8 +2283,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a3fa222e8db16499edc31f12b00953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horde: {fileID: 256268645}
-  finishPoint: {fileID: 3155951854529743604}
   slider: {fileID: 2113845251}
 --- !u!114 &2113845251
 MonoBehaviour:
@@ -2593,7 +2580,7 @@ PrefabInstance:
     - target: {fileID: 4237934609371163019, guid: fd8f66bd377f4414f89983a65010dd91, type: 3}
       propertyPath: endSequence
       value: 
-      objectReference: {fileID: 390821242}
+      objectReference: {fileID: 0}
     - target: {fileID: 4237934609371163019, guid: fd8f66bd377f4414f89983a65010dd91, type: 3}
       propertyPath: finishBarUI
       value: 
@@ -3199,17 +3186,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3155951854529743604 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4237934609371163019, guid: fd8f66bd377f4414f89983a65010dd91, type: 3}
-  m_PrefabInstance: {fileID: 1232889464143864703}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa1301b61b033b44b8fc930e7c04958, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &4125335831117595774
 MeshRenderer:
   m_ObjectHideFlags: 0

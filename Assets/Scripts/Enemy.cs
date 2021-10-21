@@ -27,32 +27,10 @@ public class Enemy : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
-    {
-        if (isAttacking && _targetHorde != null)
-        {
-            Attack(_targetHorde);
-        }
-    }
-
     public void AddForce(Vector3 center)
     {
         var relativeTarget = center - _rigidbody.position;
 
         _rigidbody.velocity = relativeTarget;
-    }
-
-    public void AttackStatus(bool status, Horde targetHorde)
-    {
-            if (status != isAttacking)
-            {
-                isAttacking = status;
-            }
-            _targetHorde = targetHorde;  
-    }
-
-    void Attack(Horde targetHorde)
-    {
-        this.transform.DOMove(targetHorde.transform.position, 2f);
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public Transform target;
+    [SerializeField] float _followSpeed;
 
     float distanceFromTarget;
-    public float xMargin;
 
     private void Start()
     {
@@ -15,8 +15,8 @@ public class CameraController : MonoBehaviour
     }
     private void LateUpdate()
     {
-        transform.position = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z - distanceFromTarget);
-        
-        //var newPos = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z - distanceFromTarget);
+        var xPos = Mathf.Lerp(transform.position.x , target.transform.position.x , _followSpeed * Time.deltaTime);
+
+        transform.position = new Vector3(xPos, transform.position.y, target.transform.position.z - distanceFromTarget);
     }
 }
