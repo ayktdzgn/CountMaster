@@ -105,7 +105,6 @@ public class EnemySpawner : MonoBehaviour
         if (id == enemySpawnerID)
         {
             var isRemove = enemyList.Remove(enemy);
-            Debug.Log(isRemove , enemy.gameObject);
             if (isRemove)
             {
                 CurrentEnemyCount--;
