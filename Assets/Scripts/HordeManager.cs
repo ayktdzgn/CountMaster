@@ -61,7 +61,7 @@ public class HordeManager : MonoBehaviour
                 }
                 else
                 {
-                    DeSpawnMember(changeCount,hordeList);
+                    DeSpawnMember(changeCount >= HordeCount ? HordeCount : changeCount, hordeList);
                 }           
                 break;
             case OperatorType.Mul:
@@ -96,9 +96,9 @@ public class HordeManager : MonoBehaviour
     {
         for (int i = 0; i < deSpawnCount; i++)
         {
-            poolManager.DestoryFromPool("Member", deSpawnObjects[i].gameObject);
+            poolManager.DestoryFromPool("Member", deSpawnObjects[0].gameObject);
 
-            hordeList.Remove(deSpawnObjects[i]);
+            hordeList.Remove(deSpawnObjects[0]);
         }     
         HordeCount -= deSpawnCount;
     }
