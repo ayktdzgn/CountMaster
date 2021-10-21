@@ -1009,6 +1009,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 256268646}
   _followSpeed: 7
+  endSeqYMargin: 10
 --- !u!1 &974478466
 GameObject:
   m_ObjectHideFlags: 0

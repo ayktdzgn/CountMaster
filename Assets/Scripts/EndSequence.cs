@@ -12,12 +12,16 @@ public class EndSequence : MonoBehaviour
     public delegate void HordeEndSequenceHandler(bool status);
     public static HordeEndSequenceHandler OnHordeEndSequenceHandler;
 
+    public delegate void CameraEndSequenceHandler(Transform target);
+    public static CameraEndSequenceHandler OnCameraEndSequenceHandler;
+
     public void PlayEndSequence(Horde horde)
     {
         _horde = horde;
         OnHordeEndSequenceHandler?.Invoke(true);
 
         objects = _horde.HordeManager.HordeList;
+        OnCameraEndSequenceHandler?.Invoke(objects[0].transform);
 
         Calculate(_horde.HordeManager.HordeCount);
         SortList();
