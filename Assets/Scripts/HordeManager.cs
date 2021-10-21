@@ -52,25 +52,25 @@ public class HordeManager : MonoBehaviour
         switch (operatorType)
         {
             case OperatorType.Add:
-                SpawnMember(changeCount, memberSpawnTransform);
-                HordeCount += changeCount;
+                SpawnMember(changeCount, memberSpawnTransform);               
                 break;
             case OperatorType.Sub:
                 if (member != null) 
                 {
                     DeSpawnMember(member);
-                    HordeCount -= changeCount;
-                }              
+                }
+                else
+                {
+                    DeSpawnMember(changeCount,hordeList);
+                }           
                 break;
             case OperatorType.Mul:
                 var mulCount = (HordeCount * changeCount) - HordeCount;
                 SpawnMember(mulCount, memberSpawnTransform);
-                HordeCount += mulCount;
                 break;
             case OperatorType.Div:
                 var divCount = HordeCount - (HordeCount / changeCount);
                 DeSpawnMember(divCount , hordeList);
-                HordeCount -= divCount;
                 break;
         }
         OnHordeCountChange?.Invoke(HordeCount);
@@ -89,6 +89,7 @@ public class HordeManager : MonoBehaviour
 
             hordeList.Add(spawned.GetComponent<Member>());
         }
+        HordeCount += spawnCount;
     }
 
     void DeSpawnMember(int deSpawnCount, List<Member> deSpawnObjects)
@@ -98,7 +99,8 @@ public class HordeManager : MonoBehaviour
             poolManager.DestoryFromPool("Member", deSpawnObjects[i].gameObject);
 
             hordeList.Remove(deSpawnObjects[i]);
-        }       
+        }     
+        HordeCount -= deSpawnCount;
     }
 
     void DeSpawnMember(Member deSpawnObject)
@@ -106,6 +108,7 @@ public class HordeManager : MonoBehaviour
 
         poolManager.DestoryFromPool("Member", deSpawnObject.gameObject);
         hordeList.Remove(deSpawnObject);
-        
+        HordeCount -= 1;
+
     }
 }

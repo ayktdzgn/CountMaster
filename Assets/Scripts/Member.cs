@@ -7,7 +7,10 @@ public class Member : MonoBehaviour
     private Rigidbody _rigidbody;
     public Rigidbody Rigidbody => _rigidbody;
 
+    public bool IsTriggerByEndSequence { get => isTriggerByEndSequence; set => isTriggerByEndSequence = value; }
+
     bool isHitByEnemy;
+    bool isTriggerByEndSequence;
 
     private void OnEnable()
     {
