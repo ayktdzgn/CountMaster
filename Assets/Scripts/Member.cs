@@ -43,8 +43,8 @@ public class Member : MonoBehaviour
             isHitByEnemy = true;
             hitEnemy = enemy;
 
-            //gameObject.layer = 8;
-            //enemy.gameObject.layer = 8;
+            gameObject.layer = 8;
+            enemy.gameObject.layer = 8;
 
             if (!enemy.IsHitByMember)
             {

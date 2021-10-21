@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     public bool IsHitByMember { get => isHitByMember; set => isHitByMember = value; }
     public int ParentSpawnerID { get => parentSpawnerID; set => parentSpawnerID = value; }
 
-    private void OnEnable()
+    private void OnDestroy()
     {
         isHitByMember = false;
     }
