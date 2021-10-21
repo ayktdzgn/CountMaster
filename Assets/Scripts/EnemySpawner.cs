@@ -54,6 +54,11 @@ public class EnemySpawner : MonoBehaviour
         {
             isTriggered = true;
 
+            foreach (var item in enemyList)
+            {
+                item.PlayRunAnimation();
+            }
+
             var horde = other.GetComponentInParent<Horde>();
             enemyHolder.DOMove(horde.transform.position , 3f);
 

@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
 
     public void PlayRunAnimation()
     {
-
+        _animator.SetTrigger("Run");
     }
 
     public void AddForce(Vector3 center)

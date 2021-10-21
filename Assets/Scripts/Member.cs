@@ -7,6 +7,7 @@ public class Member : MonoBehaviour
     private Rigidbody _rigidbody;
     public Rigidbody Rigidbody => _rigidbody;
 
+    Animator _animator;
     Enemy hitEnemy;
 
     public bool IsTriggerByEndSequence { get => isTriggerByEndSequence; set => isTriggerByEndSequence = value; }
@@ -22,6 +23,7 @@ public class Member : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -41,8 +43,9 @@ public class Member : MonoBehaviour
             isHitByEnemy = true;
             hitEnemy = enemy;
 
-            gameObject.layer = 8;
-            enemy.gameObject.layer = 8;
+            //gameObject.layer = 8;
+            //enemy.gameObject.layer = 8;
+
             if (!enemy.IsHitByMember)
             {
                HordeManager.OnHordeChange?.Invoke(1, OperatorType.Sub, this);
@@ -55,6 +58,11 @@ public class Member : MonoBehaviour
         {
             HordeManager.OnHordeChange?.Invoke(1, OperatorType.Sub, this);
         }
+    }
+
+    public void PlayIdleAnimation()
+    {
+        _animator.SetTrigger("Idle");
     }
 
     public void PullMemberToCenter(Vector3 center, Rigidbody parentRigidbody)

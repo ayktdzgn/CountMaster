@@ -19,6 +19,7 @@ public class EndSequencePlatform : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             var member = other.GetComponent<Member>();
+            member.PlayIdleAnimation();
             member.transform.SetParent(transform);
             member.Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
             if (!member.IsTriggerByEndSequence)
