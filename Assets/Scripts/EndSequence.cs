@@ -8,6 +8,7 @@ public class EndSequence : MonoBehaviour
     Horde _horde;
     List<int> stepList = new List<int>();
     List<Member> objects = new List<Member>();
+    float hordeMemberHeight = 2.2f;
 
     public delegate void HordeEndSequenceHandler(bool status);
     public static HordeEndSequenceHandler OnHordeEndSequenceHandler;
@@ -49,14 +50,16 @@ public class EndSequence : MonoBehaviour
                     {
                         if (objectInStep % 2 == 0)
                         {
-                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.3f), objects[objectIndex].transform.position.y, _horde.transform.position.z);                           
-                            if(s<stepList.Count) objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1.3f, 0.2f);
+                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
+                            if (s < stepList.Count) objects[objectIndex].transform.position = new Vector3(objects[objectIndex].transform.position.x , objects[objectIndex].transform.position.y + hordeMemberHeight, _horde.transform.position.z); /*objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 3.15f, 0.2f);*/
+                            objects[objectIndex].PlayIdleAnimation();
                             cift += 2;
                         }
                         else
                         {
-                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.3f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
-                            if (s < stepList.Count) objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1.3f, 0.2f);
+                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
+                            if (s < stepList.Count) objects[objectIndex].transform.position = new Vector3(objects[objectIndex].transform.position.x, objects[objectIndex].transform.position.y + hordeMemberHeight, _horde.transform.position.z);
+                            objects[objectIndex].PlayIdleAnimation();
                             tek += 2;
                         }
 
@@ -72,16 +75,16 @@ public class EndSequence : MonoBehaviour
 
                         if (objectInStep % 2 == 0)
                         {
-                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.3f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
-                            if (s < stepList.Count) objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1.3f, 0.2f);
-
+                            objects[objectIndex].transform.position = new Vector3(0 + (cift * -0.5f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
+                            if (s < stepList.Count) objects[objectIndex].transform.position = new Vector3(objects[objectIndex].transform.position.x, objects[objectIndex].transform.position.y + hordeMemberHeight, _horde.transform.position.z);
+                            objects[objectIndex].PlayIdleAnimation();
                             cift += 2;
                         }
                         else
                         {
-                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.3f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
-                            if (s < stepList.Count) objects[objectIndex].transform.DOMoveY(objects[objectIndex].transform.position.y + 1.3f, 0.2f);
-
+                            objects[objectIndex].transform.position = new Vector3(0 + (tek * 0.5f), objects[objectIndex].transform.position.y, _horde.transform.position.z);
+                            if (s < stepList.Count) objects[objectIndex].transform.position = new Vector3(objects[objectIndex].transform.position.x, objects[objectIndex].transform.position.y + hordeMemberHeight, _horde.transform.position.z);
+                            objects[objectIndex].PlayIdleAnimation();
                             tek += 2;
                         }
 

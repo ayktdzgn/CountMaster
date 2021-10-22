@@ -139,7 +139,7 @@ MonoBehaviour:
   _hordeManager: {fileID: 0}
   _hordeMoveControl:
     _forwardSpeed: 20
-    _sideMoveSpeed: 75
+    _sideMoveSpeed: 25
     _hordeWalkableLimits: 28
     joystick: {fileID: 0}
 --- !u!54 &1132715322849368106

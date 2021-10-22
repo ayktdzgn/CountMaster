@@ -83,6 +83,14 @@ public class Horde : MonoBehaviour
         {
             isHordeAttacking = val;
             _enemyTarget = target;
+            if (!val) 
+            {
+                foreach (var member in HordeManager.HordeList)
+                {
+                    member.IsHitByEnemy = false;
+                    member.gameObject.layer = 6;
+                }
+            }
         }
     }
 
@@ -96,7 +104,7 @@ public class Horde : MonoBehaviour
 
     private void PullCenter(int numOfCharacter, OperatorType operatorType, Member member)
     {
-        if(operatorType == OperatorType.Add || operatorType == OperatorType.Mul)SetMembersHordePosition();
+       // if(operatorType == OperatorType.Add || operatorType == OperatorType.Mul)SetMembersHordePosition();
         tempTime = 0;
     }
 

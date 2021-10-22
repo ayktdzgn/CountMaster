@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.47884, g: 0.8001845, b: 0.90072787, a: 1}
+  m_IndirectSpecularColor: {r: 0.47234017, g: 0.8014199, b: 0.8965913, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -385,12 +385,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -855,10 +855,10 @@ MonoBehaviour:
   pools:
   - tag: Member
     prefab: {fileID: 4399736461105819170, guid: 6f1ec98fd0b823e4ea4d038f94f8fb7f, type: 3}
-    size: 1000
+    size: 250
   - tag: Enemy
     prefab: {fileID: 4399736461105819170, guid: c678a807060f6f64c94ffe07f0a44896, type: 3}
-    size: 500
+    size: 200
 --- !u!4 &918843160
 Transform:
   m_ObjectHideFlags: 0
@@ -951,7 +951,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.2200165, y: 0, z: 0, w: 0.9754962}
-  m_LocalPosition: {x: 0, y: 16.97, z: -19}
+  m_LocalPosition: {x: 0, y: 25, z: -44.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1395,11 +1395,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6028103758457164532, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: _operatorValue
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6028103758589354189, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: _operatorValue
-      value: 100
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6028103759838562944, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: m_RootOrder
@@ -1838,7 +1838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 626779888984751580, guid: 3da430fa2e004644ea1892cf028ec1ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.7
+      value: 0.47
       objectReference: {fileID: 0}
     - target: {fileID: 626779888984751580, guid: 3da430fa2e004644ea1892cf028ec1ad, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2279,11 +2279,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6028103758457164532, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: _operatorValue
-      value: 30
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028103758589354189, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
+      propertyPath: _operatorType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6028103758589354189, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: _operatorValue
-      value: 15
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6028103759838562944, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: m_RootOrder
@@ -3172,7 +3176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1132715322849368107, guid: 87ab76d469455e8469893126858b5634, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -17.310001
       objectReference: {fileID: 0}
     - target: {fileID: 1132715322849368107, guid: 87ab76d469455e8469893126858b5634, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4026,15 +4030,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6028103758457164532, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: _operatorType
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6028103758457164532, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: _operatorValue
-      value: 60
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6028103758589354189, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: _operatorValue
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6028103759838562944, guid: b8b6a06380ab6424e83e2518821e5a23, type: 3}
       propertyPath: m_RootOrder
@@ -4173,7 +4177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6528558400579874587, guid: cfe9103f09a7f8046a3fa1df59799158, type: 3}
       propertyPath: enemySpawnCount
-      value: 60
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 6528558400579874587, guid: cfe9103f09a7f8046a3fa1df59799158, type: 3}
       propertyPath: enemyZoneTrigger

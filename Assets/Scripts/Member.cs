@@ -10,7 +10,11 @@ public class Member : MonoBehaviour
     Animator _animator;
     Enemy hitEnemy;
 
+    float enemyHitHoldTime = 3f;
+    float time;
+
     public bool IsTriggerByEndSequence { get => isTriggerByEndSequence; set => isTriggerByEndSequence = value; }
+    public bool IsHitByEnemy { get => isHitByEnemy; set => isHitByEnemy = value; }
 
     bool isHitByEnemy;
     bool isTriggerByEndSequence;
@@ -58,6 +62,26 @@ public class Member : MonoBehaviour
         {
             HordeManager.OnHordeChange?.Invoke(1, OperatorType.Sub, this);
         }
+    }
+
+    private void Update()
+    {
+        if (isHitByEnemy)
+        {
+            if (time > enemyHitHoldTime)
+            {
+                isHitByEnemy = false;
+                gameObject.layer = 6;
+                hitEnemy = null;
+                time = 0;
+            }
+            time += Time.deltaTime;
+        }      
+    }
+
+    public void SetMemberYPos()
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x,0, transform.localPosition.z);
     }
 
     public void PlayIdleAnimation()

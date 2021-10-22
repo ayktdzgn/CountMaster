@@ -91,7 +91,7 @@ public class EnemySpawner : MonoBehaviour
             spawned.transform.SetParent(parent);
             spawned.GetComponent<Rigidbody>().AddForce(Vector3.forward * 2, ForceMode.Impulse);
             spawned.transform.position = new Vector3(spawned.transform.position.x, parent.position.y, spawned.transform.position.z);
-            spawned.transform.DOScale(0.6f, 1);
+            spawned.transform.DOScale(1.1f, 1);
             
             var enemy = spawned.GetComponent<Enemy>();
             enemy.ParentSpawnerID = enemySpawnerID;

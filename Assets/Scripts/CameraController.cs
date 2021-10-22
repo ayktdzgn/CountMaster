@@ -28,7 +28,8 @@ public class CameraController : MonoBehaviour
         var xPos = Mathf.Lerp(transform.position.x , target.transform.position.x , _followSpeed * Time.deltaTime);
             if (target.transform.position.y + endSeqYMargin > transform.position.y)
             {
-                transform.position = new Vector3(xPos, target.transform.position.y + endSeqYMargin, target.transform.position.z - distanceFromTarget);
+                var yPos = Mathf.Lerp(transform.position.y, target.transform.position.y + endSeqYMargin, _followSpeed * Time.deltaTime);
+                transform.position = new Vector3(xPos, yPos, target.transform.position.z - distanceFromTarget);
             }
             else
             {

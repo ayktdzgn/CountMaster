@@ -13,8 +13,9 @@ public class JumpRamp : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             var randomHeight = Random.Range(yHeight, yHeight+1);
-            other.GetComponent<Member>().Rigidbody.isKinematic = true;
-            other.gameObject.transform.DOLocalJump(other.gameObject.transform.localPosition , randomHeight, 1 , duration);
+            Member member = other.GetComponent<Member>();
+            member.Rigidbody.isKinematic = true;
+            var seq = other.gameObject.transform.DOLocalJump(other.gameObject.transform.localPosition, randomHeight, 1, duration).onComplete += member.SetMemberYPos;
         }
     }
 }
